@@ -75,9 +75,6 @@ export default function Page() {
                     {verified && (
                         <div className="status success">
                             <h2>{statusMessage}</h2>
-                            <Link href="/login">
-                                <button className="action-btn">Go to Login</button>
-                            </Link>
                         </div>
                     )}
                     {error && (

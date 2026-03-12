@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import DataFromJWT from './utils/DataFromJWT';
 import axios from 'axios';
 
 export async function middleware(request: NextRequest) {

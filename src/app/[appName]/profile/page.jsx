@@ -101,63 +101,70 @@ export default function ProfilePage({params}) {
       )}
       {!loading && (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-          <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 max-w-md w-full text-center">
-            {/* Heading */}
-            <h1 className="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">User Dashboard</h1>
-
-            {/* Response Message */}
-            {response.message && (
-              <p
-                className={`mb-4 font-semibold ${
-                  response.status === 200 ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {response.message}
-              </p>
-            )}
-
-            {/* User Details */}
-            <div className="space-y-4 text-left mb-6">
-              <div className="flex justify-between border-b pb-2">
-                <span className="font-medium">ID:</span>
-                <span className="text-gray-600 dark:text-gray-300">{data._id || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="font-medium">Username:</span>
-                <span className="text-gray-600 dark:text-gray-300">{data.username || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="font-medium">Email:</span>
-                <span className="text-gray-600 dark:text-gray-300">{data.email || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="font-medium">Verified:</span>
-                <span className="text-gray-600 dark:text-gray-300">
-                  {data.isVerified ? "Yes" : "No"}
-                </span>
-              </div>
+          <div className="w-full max-w-md space-y-6">
+            {/* Solid Header for App Name */}
+            <div className=" sticky top-0 left-0 right-0 h-16 flex items-center justify-center text-2xl font-bold text-white dark:text-black bg-gray-900 dark:bg-white rounded-md shadow-md">
+              {appName}
             </div>
+            {/* profile Form */}
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 max-w-md w-full text-center">
+              {/* Heading */}
+              <h1 className="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">User Dashboard</h1>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 justify-center">
-              <button
-                onClick={logout}
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition"
-              >
-                Logout
-              </button>
-              <button
-                onClick={getUserDetails}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition"
-              >
-                Refresh
-              </button>
-              <button
-                onClick={deleteUser}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md transition"
-              >
-                Delete Account
-              </button>
+              {/* Response Message */}
+              {response.message && (
+                <p
+                  className={`mb-4 font-semibold ${
+                    response.status === 200 ? 'text-green-500' : 'text-red-500'
+                  }`}
+                >
+                  {response.message}
+                </p>
+              )}
+
+              {/* User Details */}
+              <div className="space-y-4 text-left mb-6">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">ID:</span>
+                  <span className="text-gray-600 dark:text-gray-300">{data._id || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Username:</span>
+                  <span className="text-gray-600 dark:text-gray-300">{data.username || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Email:</span>
+                  <span className="text-gray-600 dark:text-gray-300">{data.email || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Verified:</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    {data.isVerified ? "Yes" : "No"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3 justify-center">
+                <button
+                  onClick={logout}
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition"
+                >
+                  Logout
+                </button>
+                <button
+                  onClick={getUserDetails}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition"
+                >
+                  Refresh
+                </button>
+                <button
+                  onClick={deleteUser}
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md transition"
+                >
+                  Delete Account
+                </button>
+              </div>
             </div>
           </div>
         </div>

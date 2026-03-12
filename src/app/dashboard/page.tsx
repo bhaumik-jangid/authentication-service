@@ -246,7 +246,15 @@ export default function Dashboard() {
                   <Label htmlFor="clientSecret" className="sr-only">Client Secret</Label>
                   <Input id="clientSecret" value={clientSecret} readOnly />
                 </div>
-                <Button type="button" size="sm" className="px-3" onClick={() => navigator.clipboard.writeText(clientSecret)}>
+                <Button
+                  type="button"
+                  size="sm"
+                  className="px-3"
+                  onClick={() => {
+                    navigator.clipboard.writeText(clientSecret);
+                    toast.success("Client Secret copied successfully!");
+                  }}
+                >
                   <span className="sr-only">Copy</span>
                   <Copy />
                 </Button>

@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import App from "@/models/appModel";
+import crypto from "crypto";
 
 connectToMongo();
 
@@ -15,7 +16,6 @@ export async function POST(request: NextRequest) {
 
     const app = await App.findOne({ appName }).collation({ locale: 'en', strength: 2 });;
     if (!app) {
-        console.log("App does not exist.");
         return NextResponse.json(
             { error: "App does not exist." },
             { status: 400 }
@@ -38,8 +38,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    // Check if the user is verified
+ 
     if (!user.isVerified) {
       return NextResponse.json(
         { message: "Please verify your email before loggin" },
@@ -47,6 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate JWT Token
     const tokenData = {
       id: user._id,
       username: user.username,
@@ -59,24 +59,40 @@ export async function POST(request: NextRequest) {
       expiresIn: "1d",
     });
 
+    const clientTokenData = {
+      username: user.username,
+      email: user.email,
+      appName,
+    };
+
+    const clientToken = jwt.sign(clientTokenData, process.env.JWT_SECRET!, {
+      expiresIn: "1d",
+    });
+
     const response = new Response(
-      JSON.stringify({ message: `${userType} logged in successfully`, success: true, redirectAfterLogin: app.redirectAfterLogin }),
+      JSON.stringify({
+        message: `${userType} logged in successfully`,
+        success: true,
+        token, 
+        redirectAfterLogin: `${app.redirectAfterLogin}?token=${clientToken}` 
+      }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
     
+    
     // Clear any existing token
-    response.headers.append(
-      "Set-Cookie",
-      `token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict`
-    );
+    // response.headers.append(
+    //   "Set-Cookie",
+    //   `token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict`
+    // );
 
-    // Set new token
-    response.headers.append(
-      "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict; ${
-        process.env.NODE_ENV === "production" ? "Secure" : ""
-      }`
-    );
+    // // Set new token
+    // response.headers.append(
+    //   "Set-Cookie",
+    //   `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict; ${
+    //     process.env.NODE_ENV === "production" ? "Secure" : ""
+    //   }`
+    // );
 
     return response;
   } catch (error) {

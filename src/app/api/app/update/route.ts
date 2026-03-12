@@ -1,5 +1,4 @@
 import { connectToMongo } from "@/dbConfig/dbConfig";
-import Dev from "@/models/devModel";
 import App from "@/models/appModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,37 +11,33 @@ export async function PUT(request: NextRequest) {
 
         if (!appID || !appName || !redirectAfterLogin) {
             return NextResponse.json(
-                { message: "All fields (appId, appName, redirectAfterLogin) are required" },
+                { message: "All fields (appID, appName, redirectAfterLogin) are required" },
                 { status: 400 }
             );
         }
 
-        const appExists = await App.findOne({appName});
-        if(appExists){
+        const appExists = await App.findOne({ appName, appID: { $ne: appID } });
+
+        if (appExists) {
             return NextResponse.json(
-                { message: "This app name is already registerd in our system" },
+                { message: "This app name is already registered in our system" },
                 { status: 400 }
             );
         }
 
         const updatedApp = await App.findOneAndUpdate(
-            { "appID": appID }, // Find the app by appId
-            { 
-                appName, 
-                redirectAfterLogin 
-            },
-            { new: true } // Return the updated document
+            { appID },
+            { appName, redirectAfterLogin },
+            { new: true }
         );
 
-        // If no app is found, return an error
         if (!updatedApp) {
             return NextResponse.json(
                 { message: "App not found" },
                 { status: 404 }
             );
         }
-
-        // Return success response
+        
         return NextResponse.json(
             { message: "App updated successfully", app: updatedApp },
             { status: 200 }

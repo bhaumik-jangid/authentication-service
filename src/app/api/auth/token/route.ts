@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToMongo } from "@/dbConfig/dbConfig";
-import App from "@/models/appModel";
 import DataFromJWT from "@/utils/DataFromJWT";
 
 connectToMongo();

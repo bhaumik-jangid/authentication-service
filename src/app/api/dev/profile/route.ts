@@ -8,7 +8,7 @@ connectToMongo();
 export async function POST(request: NextRequest) {
     try {
         const data = await DataFromJWT(request);
-        const devId = data.id; 
+        const devId = data?.id; 
         if (!devId) {
             return NextResponse.json(
                 { error: "Unauthorized: Invalid or missing token" },
